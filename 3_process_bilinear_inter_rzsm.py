@@ -22,7 +22,7 @@ latitude = nc_data.variables['latitude'][:]
 
 
 # 读入大原始数据
-with np.load("E:\\ERA5 data process\\ERA5daily_mean\\combine_daily_mean.npz") as npz: #这里是导入的合并的2001-2020年的daily_mean数据
+with np.load("E:\\ERA5 data process\\ERA5daily\\combine_daily.npz") as npz: #这里是导入的合并的2001-2020年的daily_mean数据
     #data = np.ma.MaskedArray(**npz)#############################################不知道什么意思，问CFY
     data = npz['rzsm']
 print(data.shape) # shape (20, 365, 121, 241)这个是维度(年，天，纬度，经度)

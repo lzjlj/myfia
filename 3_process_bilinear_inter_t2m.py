@@ -22,7 +22,7 @@ latitude = nc_data.variables['latitude'][:]
 
 
 # 读入大原始数据
-with np.load("E:\\ERA5 data process\\ERA5daily_mean\\combine_daily_mean.npz") as npz: #这里是导入的合并的2001-2020年的daily_mean数据
+with np.load("E:\\ERA5 data process\\ERA5daily\\combine_daily.npz") as npz: #这里是导入的合并的2001-2020年的daily_mean数据
     #data = np.ma.MaskedArray(**npz)#############################################不知道什么意思，问CFY   # data = np.ma.MaskedArray(**npz)
     data = npz['t2m']
 print(data.shape) # shape (20, 365, 121, 241)这个是维度(年，天，纬度，经度)
@@ -74,7 +74,7 @@ def bilinear_interpolation(x, y, points):
 # 多线程的代码
 def process_subset(position_set_subset, process_id):
     print("process_id: {}, len(position_set_subset): {}".format(process_id, len(position_set_subset)))
-    t2m_pentad_subset = np.empty((len(position_set_subset), 20, 365)) ########### 这个函数创建了一个新的数组，其形状由参数指定，但不会初始化数组元素，只是分配了数组的内存空间。
+    t2m_subset = np.empty((len(position_set_subset), 20, 365)) ########### 这个函数创建了一个新的数组，其形状由参数指定，但不会初始化数组元素，只是分配了数组的内存空间。
     ####################len(position_set_subset): 这是position_set_subset的长度，可能是一个包含位置的列表或数组。
     ##############################20: 这是数组的第二维。看起来你正在为20个元素分配空间。
     #################################365: 这是数组的第三维。它可能计算一年中的天的数量
@@ -106,9 +106,9 @@ def process_subset(position_set_subset, process_id):
         #     pentad_data = moisture_bilinear_interpolation[:, pentad_day*5:(pentad_day+1)*5]
             # moisture_bilinear_interpolation_pentad[:, pentad_day] = np.mean(pentad_data, axis=1)
         # percentile_pentad = compute_percentile(moisture_bilinear_interpolation_pentad)
-        t2m_pentad_subset[i] = t2m_bilinear_interpolation
+        t2m_subset[i] = t2m_bilinear_interpolation
     # save the percentile_pentad_subset and position_set_subset
-    np.savez(f"./location_result/t2m_pentad_subset_{process_id}.npz", t2m_pentad_subset=t2m_pentad_subset, position_set_subset=position_set_subset)
+    np.savez(f"./location_result/t2m_{process_id}.npz", t2m_subset=t2m_subset, position_set_subset=position_set_subset)
                                                                                                                                                                                                           
 #final_data = np.empty((len(position_set), 20, 365))
 
